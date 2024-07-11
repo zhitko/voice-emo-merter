@@ -102,6 +102,11 @@ Item {
         return backend.getWaveFilesList(isMaleTemplate ? templateMalePath : templateFemalePath)
     }
 
+    function getTests() {
+        console.log("Action.getTests")
+        return backend.getTestsWaveFilesList()
+    }
+
     function copyToExamples(filePath, name) {
         console.log("Action.copyToExamples: ", filePath, name)
         return backend.copyToExamples(filePath, name)
@@ -312,7 +317,17 @@ Item {
 
     function openFileDialog() {
         console.log("Action.openFileDialog")
-        let newPath = backend.openFileDialog()
+        if (isMobile()) {
+            console.log("Action.openFileDialog isMobile")
+            goTests()
+        } else {
+            console.log("Action.openFileDialog isDesktop")
+            let newPath = backend.openFileDialog()
+            openFileDialogProceed(newPath)
+        }
+    }
+
+    function openFileDialogProceed(newPath) {
         console.log("Action.openFileDialog: newPath = ", newPath)
         let isChanged = root.recordPath !== newPath
         console.log("Action.openFileDialog: isChanged = ", isChanged)
@@ -320,7 +335,7 @@ Item {
         if (isChanged) {
             stackView.pop()
             if (stackView.currentItem.objectName === "../Pages/Training/Training.qml" ||
-                    stackView.currentItem.objectName === "../Pages/Test/Test.qml") {
+                    stackView.currentItem.objectName === "../Pages/Tests/Tests.qml") {
                 console.log("Action.stopRecord stackView.pop", stackView.currentItem.objectName)
                 stackView.pop()
             }
@@ -537,12 +552,12 @@ Item {
         goTraining(force)
     }
 
-    function isTestPage() {
-        return isPage(Enum.pageTest)
+    function isTestsPage() {
+        return isPage(Enum.pageTests)
     }
 
-    function goTest(force = false) {
-        goToPage(Enum.pageTest, {}, force)
+    function goTests(force = false) {
+        goToPage(Enum.pageTests, {}, force)
     }
 
     function isTrainingPage() {

@@ -86,5 +86,7 @@
         <file>Components/VoiceChartGraphForm.ui.qml</file>
         <file>Components/ResultBarForm.ui.qml</file>
         <file>Components/ResultBar.qml</file>
+        <file>Pages/Tests/Tests.qml</file>
+        <file>Pages/Tests/TestsForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -41,6 +41,7 @@ public:
 
     // Files API
     Q_INVOKABLE QVariantList getWaveFilesList(QString subpath);
+    Q_INVOKABLE QVariantList getTestsWaveFilesList();
     Q_INVOKABLE void copyToExamples(QString filePath, QString name);
     Q_INVOKABLE void copyToTemplates(QString filePath, QString subPath, QString name);
     Q_INVOKABLE void deleteWaveFile(QString path);
@@ -110,7 +111,6 @@ private:
 
     void initializeRecorder();
     void initializeAudio();
-
 signals:
 
 };

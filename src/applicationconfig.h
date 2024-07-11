@@ -7,48 +7,85 @@
 #include <QDir>
 #include <QStandardPaths>
 
+#ifdef ANDROID
+#include <QtAndroid>
+#endif
+
 namespace ApplicationConfig {
+#ifdef ANDROID
+    static const QString DataPath = "VoiceEmoMeter";
+#else
     static const QString DataPath = "data";
+#endif
     static const QString RecordsPath = "records";
     static const QString TestsPath = "tests";
     static const QString PatternsPath = "patterns";
 
-    static QString GetFullDataPath()
+    static QString getDataPath()
     {
 #ifdef ANDROID
-        QString path = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-//        QString path = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+        return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 #else
-        QString appPath = QGuiApplication::applicationDirPath();
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::DataPath);
-        QString path = QDir(dataPath).absoluteFilePath(ApplicationConfig::RecordsPath);
+        return QGuiApplication::applicationDirPath();
 #endif
+    }
+
+#ifdef ANDROID
+    static bool requestAndroidExternalStoragePermissions() {
+        const QVector<QString> permissions(
+            {"android.permission.WRITE_EXTERNAL_STORAGE",
+             "android.permission.READ_EXTERNAL_STORAGE",
+             "android.permission.READ_MEDIA_AUDIO"}
+            );
+        for (const QString &permission : permissions) {
+            auto result = QtAndroid::checkPermission(permission);
+            if (result == QtAndroid::PermissionResult::Denied) {
+                auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
+                if (resultHash[permission] == QtAndroid::PermissionResult::Denied) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+#endif
+
+    static QString checkAndCreatePath(QString path)
+    {
+#ifdef ANDROID
+        ApplicationConfig::requestAndroidExternalStoragePermissions();
+#endif
+        QDir dir(path);
+        if (!dir.exists())
+        {
+            dir.mkpath(".");
+        }
         return path;
+    }
+
+    static QString GetFullDataPath()
+    {
+        QString basePath = ApplicationConfig::getDataPath();
+        QString dataPath = QDir(basePath).absoluteFilePath(ApplicationConfig::DataPath);
+        QString path = QDir(dataPath).absoluteFilePath(ApplicationConfig::RecordsPath);
+        return checkAndCreatePath(path);
     }
 
     static QString GetFullTestsPath()
     {
-#ifdef ANDROID
-        QString path = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-#else
-        QString appPath = QGuiApplication::applicationDirPath();
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::DataPath);
+        QString basePath = ApplicationConfig::getDataPath();
+        QString dataPath = QDir(basePath).absoluteFilePath(ApplicationConfig::DataPath);
         QString path = QDir(dataPath).absoluteFilePath(ApplicationConfig::TestsPath);
-#endif
-        return path;
+        return checkAndCreatePath(path);
     }
 
     static QString GetFullPatternsPath(QString subpath = "")
     {
-#ifdef ANDROID
-        QString path = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
-#else
-        QString appPath = QGuiApplication::applicationDirPath();
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::DataPath);
+        QString basePath = ApplicationConfig::getDataPath();
+        QString dataPath = QDir(basePath).absoluteFilePath(ApplicationConfig::DataPath);
         QString path = QDir(dataPath).absoluteFilePath(ApplicationConfig::PatternsPath);
-#endif
         QString result = QDir(path).absoluteFilePath(subpath);
-        return result;
+        return checkAndCreatePath(result);
     }
 
     static const QString WaveFileExtension = "*.wav";
@@ -59,13 +96,8 @@ namespace ApplicationConfig {
 
     static QString GetFullSettingsPath()
     {
-#ifdef ANDROID
-        QString appPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::SettingsPath);
-#else
-        QString appPath = QGuiApplication::applicationDirPath();
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::SettingsPath);
-#endif
+        QString basePath = ApplicationConfig::getDataPath();
+        QString dataPath = QDir(basePath).absoluteFilePath(ApplicationConfig::SettingsPath);
         return dataPath;
     }
 
@@ -73,18 +105,13 @@ namespace ApplicationConfig {
 
     static QString GetFullResultsPath()
     {
-#ifdef ANDROID
-        QString appPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::ResultsPath);
-#else
-        QString appPath = QGuiApplication::applicationDirPath();
-        QString dataPath = QDir(appPath).absoluteFilePath(ApplicationConfig::ResultsPath);
-#endif
+        QString basePath = ApplicationConfig::getDataPath();
+        QString dataPath = QDir(basePath).absoluteFilePath(ApplicationConfig::ResultsPath);
         return dataPath;
     }
 
     static const QString SETTINGS_VERSION_KEY = "version";
-    static const QString SETTINGS_VERSION_VALUE = "15";
+    static const QString SETTINGS_VERSION_VALUE = "16";
 
     static const int RecordingFrequency =  8000;
     static const int RecordingBitsPerSample =  16;
@@ -348,7 +375,7 @@ namespace ApplicationConfig {
         {SETTINGS_FEMALE_DC,{
              {SETTINGS_NAME, "Female dC"},
              {SETTINGS_DESC, ""},
-             {SETTINGS_VAL, "2.0"},
+             {SETTINGS_VAL, "1.5"},
              {SETTINGS_TYPE, SETTINGS_TYPE_DOUBLE},
              {SETTINGS_VISIBLE, SETTINGS_TRUE},
              {SETTINGS_EDITABLE, SETTINGS_TRUE}
@@ -356,7 +383,7 @@ namespace ApplicationConfig {
         {SETTINGS_FEMALE_DB,{
              {SETTINGS_NAME, "Female dB"},
              {SETTINGS_DESC, ""},
-             {SETTINGS_VAL, "2.0"},
+             {SETTINGS_VAL, "1.5"},
              {SETTINGS_TYPE, SETTINGS_TYPE_DOUBLE},
              {SETTINGS_VISIBLE, SETTINGS_TRUE},
              {SETTINGS_EDITABLE, SETTINGS_TRUE}

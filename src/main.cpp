@@ -11,7 +11,7 @@
 #include "applicationconfig.h"
 
 void cleanDataDir();
-void copyTestDataFilesForAndroid();
+void copyTestDataFilesForAndroid(QString, QString);
 
 static const QtMessageHandler QT_DEFAULT_MESSAGE_HANDLER = qInstallMessageHandler(0);
 
@@ -57,7 +57,18 @@ int main(int argc, char *argv[])
     engine.load(url);
 
 #ifdef ANDROID
-    copyTestDataFilesForAndroid();
+    copyTestDataFilesForAndroid(
+        ApplicationConfig::PatternsPath + QDir::separator() + "female",
+        ApplicationConfig::GetFullPatternsPath("female")
+    );
+    copyTestDataFilesForAndroid(
+        ApplicationConfig::PatternsPath + QDir::separator() + "male",
+        ApplicationConfig::GetFullPatternsPath("male")
+    );
+    copyTestDataFilesForAndroid(
+        ApplicationConfig::TestsPath,
+        ApplicationConfig::GetFullTestsPath()
+    );
 #endif
 
     auto result = QApplication::exec();
@@ -72,30 +83,16 @@ int main(int argc, char *argv[])
 #ifdef ANDROID
 #include <QtAndroid>
 
-void copyTestDataFilesForAndroid()
+void copyTestDataFilesForAndroid(QString srcPath, QString dstPath)
 {
-    const QVector<QString> permissions(
-                {"android.permission.WRITE_EXTERNAL_STORAGE",
-                 "android.permission.READ_EXTERNAL_STORAGE"}
-    );
-    for (const QString &permission : permissions) {
-        auto result = QtAndroid::checkPermission(permission);
-        if (result == QtAndroid::PermissionResult::Denied) {
-            auto resultHash = QtAndroid::requestPermissionsSync(QStringList({permission}));
-            if (resultHash[permission] == QtAndroid::PermissionResult::Denied) {
-                return;
-            }
-        }
-    }
+    ApplicationConfig::requestAndroidExternalStoragePermissions();
 
     qDebug() << "copyTestDataFilesForAndroid";
 
-    const QString src = "assets:/VoiceEmoMeter";
+    const QString src = "assets:/" + srcPath;
     qDebug() << "copyTestDataFilesForAndroid src: " << src;
 
-    const QString dst = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).at(0) +
-            QDir::separator() + "VoiceEmoMeter";
-    qDebug() << "copyTestDataFilesForAndroid dst: " << dst;
+    qDebug() << "copyTestDataFilesForAndroid dst: " << dstPath;
 
     QDir srcDir(src);
     if (!srcDir.exists())
@@ -104,22 +101,14 @@ void copyTestDataFilesForAndroid()
         return;
     }
 
-    QDir dstDir(dst);
-    if (!dstDir.exists())
-    {
-        qDebug() << "copyTestDataFilesForAndroid dstDir: Not Exists";
-        auto dstDirRes = dstDir.mkpath(dst);
-        qDebug() << "copyTestDataFilesForAndroid dstDir: " << dstDirRes;
-    }
-
     foreach (QString f, srcDir.entryList(QDir::Files)) {
-        auto copyRes = QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
         qDebug() << "copyTestDataFilesForAndroid QFile::copy f: " << f;
+        auto copyRes = QFile::copy(src + QDir::separator() + f, dstPath + QDir::separator() + f);
         qDebug() << "copyTestDataFilesForAndroid QFile::copy copyRes: " << copyRes;
     }
 }
 #else
-void copyTestDataFilesForAndroid()
+void copyTestDataFilesForAndroid(QString subPath, QString dstPath)
 {
     qDebug() << "copyTestDataFilesForAndroid - Skip";
 }

@@ -11,7 +11,7 @@ Item {
     readonly property string pageAddExample: "../Pages/AddExample/AddExample.qml"
     readonly property string pageFiles: "../Pages/Files/Files.qml"
 
-    readonly property string pageTest: "../Pages/Test/Test.qml"
+    readonly property string pageTests: "../Pages/Tests/Tests.qml"
     readonly property string pageTraining: "../Pages/Training/Training.qml"
 
     readonly property string modeTraining: "mode_training"

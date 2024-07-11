@@ -40,7 +40,7 @@ QString PcmRecorder::startRecording()
         QDateTime::currentDateTime().toString(ApplicationConfig::RecordingFileNameTemplate) + ApplicationConfig::RecordingFileFormat
     );
 
-    qDebug() << path;
+    qDebug() << "PcmRecorder::startRecording " << path;
 
     this->destination_file = path;
 

@@ -7,15 +7,27 @@ import "Material"
 import "../App"
 
 Item {
+    id: root
     property bool enabled: true
     property bool showAddButton: true
+    property var getFilesFn: () => {}
+    property var actionFn: () => {}
+    property string titleText: ""
 
     Component.onCompleted: {
         loadFiles()
     }
 
+    function setGetFilesFunction(getFilesFn) {
+        root.getFilesFn = getFilesFn
+    }
+
+    function setActionFunction(actionFn) {
+        root.actionFn = actionFn
+    }
+
     function loadFiles() {
-        let files = Bus.getTemplates()
+        let files = root.getFilesFn()
         console.log("FilesList loadFiles files=", root.files)
         listModel.clear()
         for(let i in files) {
@@ -44,7 +56,7 @@ Item {
 
         Label {
             id: title
-            text: qsTr("Choose a personal voice to test emotionality")
+            text: root.titleText
 
             anchors.top: parent.top
             anchors.topMargin: 15
@@ -79,12 +91,7 @@ Item {
                 delegate: ItemDelegate {
                     width: list.width
                     onClicked: {
-                        console.log("FilesList onClicked: ", value, name)
-                        Bus.openCalmTemplate(value)
-                        Bus.setActiveTemplateName(name)
-                        Bus.cleanAngryTemplate()
-                        Bus.stackView.pop()
-                        Bus.goApplicationModePage(true)
+                        root.actionFn(value, name)
                     }
 
                     FontAwesomeIconText {

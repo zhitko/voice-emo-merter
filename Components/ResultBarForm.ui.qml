@@ -374,7 +374,7 @@ ColumnLayout {
                 opacity: hightSection.opacity
 
                 Label {
-                    text: qsTr("<b>You can't control your emotions</b><br>Anger, Hysteria, Panic")
+                    text: qsTr("<b>You can't control your emotions</b>")
                     anchors.fill: parent
                     wrapMode: Text.WordWrap
                     padding: 5
@@ -390,7 +390,7 @@ ColumnLayout {
                 opacity: midSection.opacity
 
                 Label {
-                    text: qsTr("<b>You are in control of your emotions</b><br>Conversation, Lecture, Report")
+                    text: qsTr("<b>You are in control of your emotions</b>")
                     anchors.fill: parent
                     wrapMode: Text.WordWrap
                     padding: 5
@@ -406,7 +406,7 @@ ColumnLayout {
                 opacity: lowSection.opacity
 
                 Label {
-                    text: qsTr("<b>You have no tension and stress</b><br>Calmness, Relaxation, Neutrality")
+                    text: qsTr("<b>You have no tension and stress</b>")
                     anchors.fill: parent
                     wrapMode: Text.WordWrap
                     padding: 5

@@ -10,14 +10,14 @@ import "../../Components/Material"
 
 Page {
     id: root
-    title: qsTr("Choose or Create a New Voice")
+    title: qsTr("Choose Test File")
 
     property alias filesList: filesList
 
     FilesList {
         id: filesList
-        titleText: qsTr("Choose a personal voice to test emotionality")
-        showAddButton: true
+        showAddButton: false
+        titleText: qsTr("Choose a test file to test emotionality")
         anchors.top: parent.top
         anchors.topMargin: 10
         anchors.right: parent.right

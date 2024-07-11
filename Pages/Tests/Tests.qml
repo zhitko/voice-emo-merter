@@ -3,24 +3,20 @@ import QtQuick.Controls 2.14
 
 import "../../App"
 
-FilesForm {
+TestsForm {
     id: root
-    objectName: Enum.pageFiles
+    objectName: Enum.pageTests
 
     function actionFn(value, name) {
         console.log("FilesForm actionFn: ", value, name)
-        Bus.openCalmTemplate(value)
-        Bus.setActiveTemplateName(name)
-        Bus.cleanAngryTemplate()
-        Bus.stackView.pop()
-        Bus.goApplicationModePage(true)
+        Bus.openFileDialogProceed(value)
     }
 
     StackView.onActivated: {
         console.log("FilesForm.StackView.onActivated")
         Bus.hideAllBottomActions()
         root.filesList.setActionFunction(root.actionFn)
-        root.filesList.setGetFilesFunction(Bus.getTemplates)
+        root.filesList.setGetFilesFunction(Bus.getTests)
         root.filesList.loadFiles()
     }
 }

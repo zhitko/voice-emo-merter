@@ -52,18 +52,18 @@
 <context>
     <name>Backend</name>
     <message>
-        <location filename="src/backend_files.cpp" line="106"/>
-        <location filename="src/backend_files.cpp" line="116"/>
+        <location filename="src/backend_files.cpp" line="92"/>
+        <location filename="src/backend_files.cpp" line="100"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/backend_files.cpp" line="108"/>
+        <location filename="src/backend_files.cpp" line="94"/>
         <source>Wave (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/backend_files.cpp" line="118"/>
+        <location filename="src/backend_files.cpp" line="102"/>
         <source>Wave (*.wav)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,17 +75,16 @@
         <source>Choose or Create a New Voice</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="Pages/Files/FilesForm.ui.qml" line="19"/>
+        <source>Choose a personal voice to test emotionality</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FilesList</name>
     <message>
-        <location filename="Components/FilesList.qml" line="47"/>
-        <source>Choose a personal voice to test emotionality</source>
-        <oldsource>Choose a person to test the emotionality</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Components/FilesList.qml" line="104"/>
+        <location filename="Components/FilesList.qml" line="111"/>
         <source>Create a New Voice</source>
         <translation type="unfinished"></translation>
     </message>
@@ -158,17 +157,20 @@
     </message>
     <message>
         <location filename="Components/ResultBarForm.ui.qml" line="377"/>
-        <source>&lt;b&gt;You can&apos;t control your emotions&lt;/b&gt;&lt;br&gt;Anger, Hysteria, Panic</source>
+        <source>&lt;b&gt;You can&apos;t control your emotions&lt;/b&gt;</source>
+        <oldsource>&lt;b&gt;You can&apos;t control your emotions&lt;/b&gt;&lt;br&gt;Anger, Hysteria, Panic</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Components/ResultBarForm.ui.qml" line="393"/>
-        <source>&lt;b&gt;You are in control of your emotions&lt;/b&gt;&lt;br&gt;Conversation, Lecture, Report</source>
+        <source>&lt;b&gt;You are in control of your emotions&lt;/b&gt;</source>
+        <oldsource>&lt;b&gt;You are in control of your emotions&lt;/b&gt;&lt;br&gt;Conversation, Lecture, Report</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Components/ResultBarForm.ui.qml" line="409"/>
-        <source>&lt;b&gt;You have no tension and stress&lt;/b&gt;&lt;br&gt;Calmness, Relaxation, Neutrality</source>
+        <source>&lt;b&gt;You have no tension and stress&lt;/b&gt;</source>
+        <oldsource>&lt;b&gt;You have no tension and stress&lt;/b&gt;&lt;br&gt;Calmness, Relaxation, Neutrality</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -208,6 +210,19 @@
     <message>
         <location filename="Components/SpectrumChartForm.ui.qml" line="60"/>
         <source>Calm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TestsForm.ui</name>
+    <message>
+        <location filename="Pages/Tests/TestsForm.ui.qml" line="13"/>
+        <source>Choose Test File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Pages/Tests/TestsForm.ui.qml" line="20"/>
+        <source>Choose a test file to test emotionality</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
